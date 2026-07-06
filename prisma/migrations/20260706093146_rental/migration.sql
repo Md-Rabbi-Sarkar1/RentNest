@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "rental_requests" ALTER COLUMN "startDate" SET DEFAULT CURRENT_TIMESTAMP,
+ALTER COLUMN "endDate" DROP NOT NULL,
+ALTER COLUMN "totalAmount" DROP NOT NULL;

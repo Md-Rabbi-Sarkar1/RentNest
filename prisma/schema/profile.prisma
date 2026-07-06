@@ -3,7 +3,7 @@ model Profile {
   profilePhoto String?
   bio          String?
   authorId     String   @unique
-  user         User     @relation(fields: [authorId], references: [id])
+  user         User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 

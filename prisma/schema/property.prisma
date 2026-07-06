@@ -8,11 +8,7 @@
   isAvailable Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-
-
-  categoryId  String
-  category    Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  
+  categories String[]
   landlordId  String
   landlord    User     @relation(fields: [landlordId], references: [id], onDelete: Cascade)
 
