@@ -8,3 +8,17 @@ enum Role {
   LANDLORD
   ADMIN
 }
+
+enum RequestStatus{
+  PENDING
+  ACCEPTED
+  REJECTED
+  CANCELED
+}
+
+enum PaymentStatus{
+  PENDING
+  PAID
+  FAILED
+  CANCELED
+}

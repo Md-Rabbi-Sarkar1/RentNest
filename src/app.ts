@@ -4,6 +4,7 @@ import cors from 'cors'
 import express, { Application, Request, Response } from 'express'
 import config from './config';
 import { userRouter } from './modules/user/user.route';
+import { authRouter } from './modules/auth/auth.route';
 const app: Application = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
@@ -14,7 +15,7 @@ app.use(cors({
 }))
 
 app.use('/api/user',userRouter)
-
+app.use('/api/auth',authRouter)
 
 
 app.get("/", (req: Request, res: Response) => {
