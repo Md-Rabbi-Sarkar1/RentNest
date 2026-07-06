@@ -36,9 +36,9 @@ export const auth = (...requiredRoles: Role[]) => {
         if (!user) {
             throw new Error("User not found")
         }
-        if (user.activeStatus === "BLOCKED") {
-            throw new Error("Your account has been blocked")
-        }
+        // if (user.activeStatus === "BLOCKED") {
+        //     throw new Error("Your account has been blocked")
+        // }
         req.user = {
             email,
             name,

@@ -10,6 +10,8 @@ import { rentalRouter } from './modules/rental/rental.route';
 import { notFound } from './middleware/notFound';
 import { globalErrorHandler } from './middleware/globalErrorHandler';
 import { adminRouter } from './modules/admin/admin.route';
+import { reviewRouter } from './modules/review/review.route';
+import { publicRouter } from './modules/publicUser/putlic.route';
 const app: Application = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
@@ -24,6 +26,8 @@ app.use('/api/auth',authRouter)
 app.use('/api/landlord',postRouter)
 app.use('/api/rentals',rentalRouter)
 app.use('/api/admin',adminRouter)
+app.use('/api/reviews',reviewRouter)
+app.use('/api',publicRouter)
 app.get("/", (req: Request, res: Response) => {
     res.send("Hello");
 })
