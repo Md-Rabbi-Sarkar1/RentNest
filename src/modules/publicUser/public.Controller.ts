@@ -24,6 +24,8 @@ sendResponse(res, {
         data: result
     })
     })
+
+    
 export const publicController={
     getAllPost,
     getPostById

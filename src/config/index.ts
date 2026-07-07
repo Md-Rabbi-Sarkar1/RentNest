@@ -13,4 +13,6 @@ export default {
     stripe_product_price_Id:process.env.STRIPE_PRODUCT_PRICE_ID!,
     stripe_secret_key:process.env.STRIPE_SECRET_KEY!,
     stripe_webhook_secret:process.env.STRIPE_WEBHOOK_SECRET!,
+    ssl_commerz_store_id:process.env.SSL_COMMERZ_STORE_ID!,
+    ssl_commerz_store_passwd:process.env.SSL_COMMERZ_STORE_PASSWD
 }

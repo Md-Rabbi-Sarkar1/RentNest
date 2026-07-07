@@ -8,19 +8,6 @@ import { sendResponse } from "../../utils/sendResponse";
 
 import { Role } from "../../../generated/prisma/enums";
 
-declare global {
-    namespace Express {
-        interface Request {
-            user?: {
-                email: string;
-                name: string;
-                id: string,
-                role: Role
-
-            }
-        }
-    }
-}
 
 const registerUser = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const payload = req.body

@@ -12,6 +12,7 @@ import { globalErrorHandler } from './middleware/globalErrorHandler';
 import { adminRouter } from './modules/admin/admin.route';
 import { reviewRouter } from './modules/review/review.route';
 import { publicRouter } from './modules/publicUser/putlic.route';
+import { paymentRouter } from './modules/payment/payment.route';
 const app: Application = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
@@ -28,6 +29,7 @@ app.use('/api/rentals',rentalRouter)
 app.use('/api/admin',adminRouter)
 app.use('/api/reviews',reviewRouter)
 app.use('/api',publicRouter)
+app.use('/api/payments',paymentRouter)
 app.get("/", (req: Request, res: Response) => {
     res.send("Hello");
 })

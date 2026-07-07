@@ -10,6 +10,6 @@ model Payment {
   updatedAt         DateTime      @updatedAt
   rentalRequestId   String
   rentalRequest     RentalRequest @relation(fields: [rentalRequestId], references: [id], onDelete: Cascade)
-
+  meta Json?
   @@map("payments")
 }
