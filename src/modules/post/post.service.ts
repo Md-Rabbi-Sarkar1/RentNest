@@ -1,9 +1,11 @@
+import { connect } from "node:http2"
 import { RequestStatus } from "../../../generated/prisma/enums"
 import { PropertyWhereInput } from "../../../generated/prisma/models"
 import { prisma } from "../../lib/prisma"
 import { IPost, IPQuery, IUpdatePost } from "./interface"
 
 const createPostIntoDB = async (payload: IPost, userId: string) => {
+    const {categoryName,...restPayload}=payload
     const user = await prisma.user.findUniqueOrThrow({
         where:{
             id:userId
@@ -13,8 +15,9 @@ const createPostIntoDB = async (payload: IPost, userId: string) => {
 
     const result = await prisma.property.create({
         data: {
-            ...payload,
-            landlordId: userId
+            ...restPayload,
+            landlordId: userId,
+            
         }
     })
     return result

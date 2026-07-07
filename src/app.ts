@@ -34,5 +34,5 @@ app.get("/", (req: Request, res: Response) => {
     res.send("Hello");
 })
 app.use(notFound)
-// app.use(globalErrorHandler)
+app.use(globalErrorHandler)
 export default app;

@@ -1,14 +1,14 @@
 import { NextFunction, Request, Response } from "express";
 import httpStatus from "http-status";
 import { Prisma } from "../../generated/prisma/client";
+import { StatusCodes } from "http-status-codes";
 
 export const globalErrorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
     console.log("Error : ", err);
 
-    let statusCode;
+    let statusCode=err.statusCode || httpStatus.INTERNAL_SERVER_ERROR;
     let errorMessage = err.message || "Internal Server Error";
-    let errorName = err.name || "Internal Server Error";
-    // let errorDetails = err.stack
+    let errorName = err.name || "Internal Server Error"
 
     if (err instanceof Prisma.PrismaClientValidationError) {
         statusCode = httpStatus.BAD_REQUEST;
@@ -36,4 +36,16 @@ export const globalErrorHandler = (err: any, req: Request, res: Response, next: 
         statusCode = httpStatus.INTERNAL_SERVER_ERROR;
         errorMessage = "Error occurred during query execution"
     }
+    else if (err as any) {
+    
+        statusCode = err.statusCode  || httpStatus.BAD_REQUEST; 
+        errorMessage = err.message;
+        errorName = "OperationalError";
+    }
+    return res.status(statusCode as any).json({
+        success: false,
+        name: errorName,
+        message: errorMessage,
+        stack: process.env.NODE_ENV === 'development' ? err.stack : undefined
+    });
 }

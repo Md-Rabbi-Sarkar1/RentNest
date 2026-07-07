@@ -6,4 +6,5 @@ router.get('/users',adminController.getAllUser)
 router.patch('/users/:id',adminController.changeUserStatus)
 router.get('/properties',adminController.getAllProperties)
 router.get('/rentals',adminController.getAllRentals)
+router.post('/category',adminController.postCategory)
 export const adminRouter = router;

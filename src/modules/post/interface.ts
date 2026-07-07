@@ -6,7 +6,8 @@ export interface IPost {
   address: string;
   price: number;
   imageUrl: string;
-  categories: string[];
+  categoryId:number;
+  categoryName:string;
 }
 export interface IUpdatePost {
   title?:string,

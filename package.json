@@ -41,5 +41,8 @@
     "jsonwebtoken": "^9.0.3",
     "pg": "^8.22.0",
     "sslcommerz-lts": "^1.2.0"
+  },
+  "prisma": {
+    "seed": "tsx src/lib/seed.ts"
   }
 }

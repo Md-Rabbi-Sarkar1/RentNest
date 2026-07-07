@@ -3,6 +3,7 @@ import { catchAsync } from "../../utils/catchAsync"
 import { sendResponse } from "../../utils/sendResponse"
 import { NextFunction, Request, Response } from "express"
 import { adminService } from "./admin.service"
+import { ICategory } from "./interface"
 
 const getAllUser = catchAsync(
     async (req: Request, res: Response, next: NextFunction) => {
@@ -48,10 +49,22 @@ const result = await adminService.changeUserStatus(userId as string,status);
             data: result
         })
     })
+    const postCategory =catchAsync(
+    async (req: Request, res: Response, next: NextFunction) => {
+        const payload = req.body
+        const result = await adminService.postCategory(payload )
+        sendResponse(res,{
+            success:true,
+            statusCode:StatusCodes.OK,
+            message:"post succefully",
+            data: result
+        })
+    })
     export const adminController ={
         getAllUser,
         changeUserStatus,
         getAllProperties,
-        getAllRentals
+        getAllRentals,
+        postCategory
 
     }

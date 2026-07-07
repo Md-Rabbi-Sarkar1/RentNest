@@ -2,6 +2,7 @@ import { StatusCodes } from "http-status-codes"
 import { catchAsync } from "../../utils/catchAsync"
 import { sendResponse } from "../../utils/sendResponse"
 import { publicService } from "./public.service"
+import { Request, Response } from "express"
 
 const getAllPost=catchAsync(async (req,
     res) => {
@@ -24,9 +25,19 @@ sendResponse(res, {
         data: result
     })
     })
+const getPropertyCategories = catchAsync(async (req: Request, res: Response) => {
+  const result = await publicService.getAllCategoriesFromDB();
 
-    
+  sendResponse(res, {
+    success: true,
+    statusCode: StatusCodes.OK,
+    message: "Property categories fetched successfully",
+    data: result,
+  });
+});
+
 export const publicController={
     getAllPost,
-    getPostById
+    getPostById,
+     getPropertyCategories
 }

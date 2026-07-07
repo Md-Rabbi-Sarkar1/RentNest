@@ -12,7 +12,21 @@ const getPostById= async(postId:string)=>{
     })
     return result
 }
+const getAllCategoriesFromDB = async ()=> {
+  
+const categories = await prisma.category.findMany({
+    include:{
+        properties:true
+    },
+  orderBy: {
+    name: 'asc' 
+  }
+});
+return categories
+};
+
 export const publicService = {
     getAllPost,
-    getPostById
+    getPostById,
+     getAllCategoriesFromDB
 }
