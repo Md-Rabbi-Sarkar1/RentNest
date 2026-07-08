@@ -1,4 +1,4 @@
-import { Request } from "express"
+import { NextFunction, Request, Response } from "express"
 import { catchAsync } from "../../utils/catchAsync"
 import { sendResponse } from "../../utils/sendResponse"
 import { StatusCodes } from "http-status-codes"
@@ -8,13 +8,12 @@ import { prisma } from "../../lib/prisma"
 
 const createPost = catchAsync(async (req, res) => {
     const id = req.user?.id
-    console.log(id)
     const payload = req.body
     const result = await postService.createPostIntoDB(payload, id as string)
     sendResponse(res, {
         success: true,
         statusCode: StatusCodes.OK,
-        message: "Post created successfully",
+        message: "Property listing created successfully",
         data: result
     })
 })
@@ -26,7 +25,7 @@ const getAllPost = catchAsync(async (req, res) => {
     sendResponse(res, {
         success: true,
         statusCode: StatusCodes.OK,
-        message: 'post retrive successfully',
+        message: 'Landlord property portfolio inventory retrieved successfully',
         data: result.data,
         meta: result.meta
     })
@@ -40,13 +39,13 @@ const getPostById = catchAsync(async (req, res) => {
     sendResponse(res, {
         success: true,
         statusCode: StatusCodes.OK,
-        message: 'post retrive successfully',
+        message: 'Property listing matching target reference ID successfully found',
         data: result
     })
 })
 const updatePost = catchAsync(async (req, res) => {
     const authorId = req.user?.id
-    // const islanLord = req.user?.role === "LANLORD"
+  
     const postId = req.params.postId
     if (!postId) {
         throw new Error("Post id required in params")
@@ -56,7 +55,7 @@ const updatePost = catchAsync(async (req, res) => {
     sendResponse(res, {
         success: true,
         statusCode: StatusCodes.OK,
-        message: 'post updated successfully',
+        message: 'Property listing profile metadata refreshed successfully',
         data: result
     })
 })
@@ -71,20 +70,19 @@ const deletePost = catchAsync(async (req, res) => {
     sendResponse(res, {
         success: true,
         statusCode: StatusCodes.OK,
-        message: 'post delete successfully',
+        message: 'Property listing records wiped out from active marketplace systems',
         data: null
     })
 })
 
-const getRentalRequestMyPost = catchAsync(async (req, res) => {
+const getRentalRequestMyPost = catchAsync(async (req:Request, res:Response,next:NextFunction) => {
     const userId = req.user?.id
-    console.log(userId)
     const result = await postService.getRentalRequestMyPost(userId as string)
 
     sendResponse(res, {
         success: true,
         statusCode: StatusCodes.OK,
-        message: 'Rental request retrive successfully',
+        message: 'Incoming requests matching Landlord property queue pulled successfully',
         data: result
     })
 })
@@ -94,11 +92,14 @@ const changeRequestState = catchAsync(async (req,
     const requsestId = req.params.id
     const userId= req.user?.id
     const status=req.body.status
+      if (!requsestId || !status) {
+        throw new Error(" Both tracking ID and status mutation string parameters are mandatory");
+    }
     const result = await postService.changeRequestState(requsestId as string,status,userId as string, )
     sendResponse(res, {
         success: true,
         statusCode: StatusCodes.OK,
-        message: 'Rental request retrive successfully',
+        message: 'Tenant booking tracking status altered successfully',
         data: result
     })
 })

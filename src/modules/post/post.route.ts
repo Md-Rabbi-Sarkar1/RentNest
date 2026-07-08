@@ -5,11 +5,11 @@ import { Role } from "../../../generated/prisma/enums";
 
 const router = Router();
 router.post('/properties',auth(Role.LANDLORD),postController.createPost)
-router.get('/properties',auth(Role.LANDLORD),postController.getAllPost)
+router.get('/properties',auth(Role.LANDLORD,Role.ADMIN),postController.getAllPost)
 router.get('/requests',auth(Role.LANDLORD),postController.getRentalRequestMyPost)
-router.get('/:postId',auth(Role.LANDLORD),postController.getPostById)
+router.get('/:postId',auth(Role.LANDLORD,Role.ADMIN),postController.getPostById)
 router.put('/:postId',auth(Role.LANDLORD),postController.updatePost)
-router.delete('/:postId',auth(Role.LANDLORD),postController.deletePost)
+router.delete('/:postId',auth(Role.LANDLORD,Role.ADMIN),postController.deletePost)
 router.patch('/:id',auth(Role.LANDLORD),postController.changeRequestState)
 
 

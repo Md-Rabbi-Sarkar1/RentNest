@@ -11,7 +11,7 @@ const getAllUser = catchAsync(
         sendResponse(res,{
             success:true,
             statusCode:StatusCodes.OK,
-            message:"User retrive succefully",
+            message:"All marketplace platform users retrieved successfully",
             data: result
         })
     })

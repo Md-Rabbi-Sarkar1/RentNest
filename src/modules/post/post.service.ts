@@ -5,19 +5,13 @@ import { prisma } from "../../lib/prisma"
 import { IPost, IPQuery, IUpdatePost } from "./interface"
 
 const createPostIntoDB = async (payload: IPost, userId: string) => {
-    const {categoryName,...restPayload}=payload
-    const user = await prisma.user.findUniqueOrThrow({
-        where:{
-            id:userId
-        }
-        
-    })
+    const {categoryId,...restPayload}=payload
 
     const result = await prisma.property.create({
         data: {
             ...restPayload,
             landlordId: userId,
-            
+            categoryId:categoryId
         }
     })
     return result
@@ -62,11 +56,7 @@ const post = await prisma.property.findMany({
             [sortBy]:sortOrder
         },
         include: {
-            landlord: {
-                omit: {
-                    password: true
-                }
-            },
+            category:{select:{name:true}},
             reviews: true
         }
     })
@@ -88,22 +78,22 @@ const post = await prisma.property.findMany({
 const getPostById = async (postId: string) => {
 
 
-//         const result = await prisma.property.findUniqueOrThrow({
-//             where: {
-//                 id: postId,
-//             },
-//             include: {
-//                 landlord: {
-//                     omit: {
-//                         password: true
-//                     }
-//                 }
+        const result = await prisma.property.findUniqueOrThrow({
+            where: {
+                id: postId,
+            },
+            include: {
+                landlord: {
+                    select:{id: true, name: true, email: true}
+                },
+                category:true,
+                reviews:true
     
-//                 }
+                }
             
-//         })
+        })
         
-//   return result
+  return result
 
 }
 const updatePost = async (postId: string, payload: IUpdatePost, lanlordId: string) => {
@@ -120,13 +110,7 @@ const updatePost = async (postId: string, payload: IUpdatePost, lanlordId: strin
             id: postId
         },
         data: payload,
-        include: {
-            landlord: {
-                omit: {
-                    password: true
-                }
-            }
-        }
+        include: { category: { select: { name: true } } }
     })
     return result
 }
@@ -155,10 +139,10 @@ const getRentalRequestMyPost = async(userId:string)=>{
             }
         },
         include:{
-            property:true,
+            property:{select: { id: true, title: true }},
             tenant:{
                 select:{
-                    id:true,
+                    id:true,name: true, email: true
                 }
             }
         }
@@ -167,13 +151,20 @@ const getRentalRequestMyPost = async(userId:string)=>{
 }
 
 const changeRequestState = async(requestId:string,status:RequestStatus,userId:string)=>{
-    
+    const request = await prisma.rentalRequest.findUnique({
+        where: { id: requestId },
+        include: { property: true }
+    });
+        if (!request) {
+        throw new Error("The incoming tenant booking request records are absent");
+    }
+    if (request.property.landlordId !== userId) {
+        throw new Error(" Alteration commands matching current owner profile invalid");
+    }
     const result = await prisma.rentalRequest.update({
         where:{
             id: requestId,
-            // property:{
-            //     landlordId:userId
-            // }
+            
         },
         data:{
             status,
