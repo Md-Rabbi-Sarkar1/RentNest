@@ -42,7 +42,7 @@ maxAge: 1000 * 60 * 60 * 24
 sendResponse(res,{
     success:true,
     statusCode:StatusCodes.OK,
-    message:"successfully create refreshToken",
+    message:"Successfully create refreshToken",
     data: {accessToken}
 })
 })

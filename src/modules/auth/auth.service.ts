@@ -26,7 +26,7 @@ const loginUserIntoDB = async (payload: ILoginUser) => {
         email: user.email,
         role: user.role,
     };
-    // console.log(jwtPayload);
+    
     const accessToken = jwtUtils.createToken(
         jwtPayload,
         config.jwt_access_secret,
@@ -37,7 +37,7 @@ const loginUserIntoDB = async (payload: ILoginUser) => {
         config.jwt_refresh_secret,
         config.jwt_refresh_expires_in as SignOptions,
     );
-    // req.user=user
+    
     return { accessToken, refreshToken };
 };
 const refreshToken = async (refreshToken: string)=>{

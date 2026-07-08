@@ -3,10 +3,16 @@ import bcrypt from "bcrypt"
 
 
 import { prisma } from "../../lib/prisma";
-import { createUserPayload } from "./interface";
+import { createUserPayload, IUpdateUser } from "./interface";
 import config from "../../config";
+import { Role } from "../../../generated/prisma/enums";
 const createUserIntoDB = async (payload: createUserPayload) => {
     const { name, email, password, profilePhoto,role } = payload;
+    if ((role as unknown) === Role.ADMIN) {
+    throw new Error(
+        "You don't register as a admin"
+    );
+  }
     const isUserExist = await prisma.user.findUnique({
         where: { email }
     })
@@ -54,7 +60,7 @@ const getMyProfileFromDB = async (userId: string) => {
     })
     return user
 }
-const updateMyprofileInDB = async (userId: string, payload: any) => {
+const updateMyprofileInDB = async (userId: string, payload: IUpdateUser) => {
     const { name, email, profilePhoto, bio } = payload;
     const updatedUser = await prisma.user.update({
         where: { id: userId },

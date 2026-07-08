@@ -10,7 +10,7 @@ const result = await publicService.getAllPost()
             sendResponse(res, {
                     success: true,
                     statusCode: StatusCodes.OK,
-                    message: 'Rental request retrive successfully',
+                    message: 'Properties retrive successfully',
                     data: result
                 })
     })
@@ -21,7 +21,7 @@ export const getPostById = catchAsync(async (req,
 sendResponse(res, {
         success: true,
         statusCode: StatusCodes.OK,
-        message: 'Post retrive successfully',
+        message: 'Porperty retrive successfully',
         data: result
     })
     })
@@ -31,7 +31,7 @@ const getPropertyCategories = catchAsync(async (req: Request, res: Response) => 
   sendResponse(res, {
     success: true,
     statusCode: StatusCodes.OK,
-    message: "Property categories fetched successfully",
+    message: "Property categories with property fetched successfully",
     data: result,
   });
 });

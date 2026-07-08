@@ -4,7 +4,7 @@ import { auth } from "../../middleware/auth";
 import { Role } from "../../../generated/prisma/enums";
 
 const router = Router();
-router.post('/:postId',auth(Role.LANDLORD),rentalController.rentalRequest)
-router.get('/',rentalController.getAllRentalReqest)
-router.get('/:id',rentalController.getAllRentalReqestByRentalId)
+router.post('/:postId',auth(Role.TENANT),rentalController.rentalRequest)
+router.get('/',auth(Role.ADMIN, Role.LANDLORD),rentalController.getAllRentalReqest)
+router.get('/:id',auth(Role.TENANT, Role.LANDLORD, Role.ADMIN),rentalController.getAllRentalReqestByRentalId)
 export const rentalRouter = router;
