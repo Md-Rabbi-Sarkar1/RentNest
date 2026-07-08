@@ -20,10 +20,10 @@ declare global {
 }
 export const auth = (...requiredRoles: Role[]) => {
     return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-        let token = req.cookies.accessToken 
+        let token = req.cookies.accessToken
         if (!token && req.headers.authorization?.startsWith("Bearer ")) {
-    token = req.headers.authorization.split(" ")[1];
-}
+            token = req.headers.authorization.split(" ")[1];
+        }
 
         if (!token) {
             throw new Error("your are not loged in")
@@ -36,20 +36,22 @@ export const auth = (...requiredRoles: Role[]) => {
         if (!requiredRoles.length && !requiredRoles.includes(role)) {
             throw new Error("forbidden")
         }
+        if (requiredRoles.length > 0 && !requiredRoles.includes(role)) {
+      throw new Error("you are not authorized to access this route")}
         const user = await prisma.user.findUnique({
             where: {
                 id,
                 email,
                 name,
-                role 
+                role
             }
         })
         if (!user) {
             throw new Error("User not found")
         }
-        // if (user.activeStatus === "BLOCKED") {
-        //     throw new Error("Your account has been blocked")
-        // }
+        if (user.activeStatus === "BLOCKED") {
+            throw new Error("Your account has been blocked")
+        }
         req.user = {
             email,
             name,
