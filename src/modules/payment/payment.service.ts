@@ -10,6 +10,9 @@ const createPayment = async (rentalRequestId: string, user: JwtPayload) => {
             id: rentalRequestId
         }
     })
+    if (!order || !order.totalAmount) {
+        throw new Error("Rental request not found or totalAmount is missing.");
+    }
     const tranId = `TRNX_ID_${Date.now()}`;
     const paymentData = {
         store_id: config.ssl_commerz_store_id,
@@ -30,11 +33,19 @@ const createPayment = async (rentalRequestId: string, user: JwtPayload) => {
         cus_country: "Bangladesh",
         cus_phone: "01711111111",
         cus_fax: "01711111111",
+        shipping_method: "NO",
+        product_name: "Rental Property Fee",
+        product_category: "Property Marketplace",
+        product_profile: "general"
     };
+const formBody = new URLSearchParams();
+    Object.keys(paymentData).forEach((key) => {
+        formBody.append(key, String(paymentData[key as keyof typeof paymentData]));
+    });
 
     const response = await axios.post(
         "https://sandbox.sslcommerz.com/gwprocess/v4/api.php",
-        paymentData,
+        formBody.toString(),
         {
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
         },
@@ -68,12 +79,11 @@ const verifyPayment = async (
   );
 
   const data = await response.data;
-  console.log(data);
   if (data.status === "VALID") {
     await prisma.rentalRequest.update({
       where: { id: orderId },
       data: {
-        status: "ACCEPTED",
+        status: "COMPLETED",
       },
     });
     await prisma.payment.update({
@@ -104,8 +114,15 @@ const verifyPayment = async (
 
   return status;
 };
-const getPaymentHistory=async()=>{
-    const result = await prisma.payment.findMany()
+const getPaymentHistory=async(tenantId : string)=>{
+    const result = await prisma.payment.findMany({
+      where:{
+        rentalRequest:{
+          tenantId:tenantId
+        }
+      },
+      orderBy:{createdAt:"desc"}
+    })
     return result
 }
 const getPaymentHistoryById=async(paymentId : string)=>{

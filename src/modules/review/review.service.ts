@@ -6,7 +6,6 @@ import { RequestStatus } from "../../../generated/prisma/enums"
 
 const giveReview = async (propertyId:string,userId:string,payload:IRview)=>{
     const {rating,comment}=payload 
-    console.log(payload,userId,propertyId)
     
     const approvedBooking = await prisma.rentalRequest.findFirst({
     where:{

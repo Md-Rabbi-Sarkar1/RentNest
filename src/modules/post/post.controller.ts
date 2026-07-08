@@ -20,7 +20,6 @@ const createPost = catchAsync(async (req, res) => {
 
 const getAllPost = catchAsync(async (req, res) => {
     const query = req.query
-    console.log(query)
     const result = await postService.getAllPost(query as IPQuery);
     sendResponse(res, {
         success: true,

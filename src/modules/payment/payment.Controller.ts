@@ -46,11 +46,12 @@ const verifyPayment = catchAsync(async (req, res) => {
 
 const getPaymentHistory =catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-   const result= await paymentService.getPaymentHistory()
+    const userId = req.user?.id
+   const result= await paymentService.getPaymentHistory(userId as string)
     sendResponse(res, {
                 success: true,
                 statusCode: StatusCodes.OK,
-                message: "User successfully login",
+                message: "Transaction Histories compiles successfully",
                 data: result
             })
     })
@@ -61,7 +62,7 @@ const getPaymentHistoryById=catchAsync(
     sendResponse(res, {
                 success: true,
                 statusCode: StatusCodes.OK,
-                message: "User successfully login",
+                message: "Transaction details record fetched successfully",
                 data: result
             })
     })
