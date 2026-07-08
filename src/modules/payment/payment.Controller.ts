@@ -12,14 +12,16 @@ export const createPayment = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const user = req.user
     const rentalRequestId = req.params.id
-    console.log(rentalRequestId,user)
+     if (!rentalRequestId) {
+        throw new Error("Validation Error: Rental request ID parameter is required");
+    }
 const result = await paymentService.createPayment( rentalRequestId as string,user as JwtPayload)
 
             sendResponse(res, {
                 success: true,
                 statusCode: StatusCodes.OK,
-                message: "User successfully login",
-                data: result
+                message: "SSLCommerz payment session url generated successfully",
+                data:{gatewayUrl:result } 
             })
     })
 

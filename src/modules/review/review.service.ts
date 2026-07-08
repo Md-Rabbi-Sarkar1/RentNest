@@ -2,6 +2,7 @@ import { stringify } from "node:querystring"
 import { prisma } from "../../lib/prisma"
 import { IPost } from "../post/interface"
 import { IRview } from "./interface"
+import { RequestStatus } from "../../../generated/prisma/enums"
 
 const giveReview = async (propertyId:string,userId:string,payload:IRview)=>{
     const {rating,comment}=payload 
@@ -11,9 +12,12 @@ const giveReview = async (propertyId:string,userId:string,payload:IRview)=>{
     where:{
        propertyId,
        tenantId:userId,
-        status:"ACCEPTED"
+        status: RequestStatus.COMPLETED
     }  
 })
+if(!approvedBooking){
+     throw new Error("You must complete a rental agreement transaction for this property to post reviews")
+}
     if (!approvedBooking) {
         throw new Error("UNAUTHORIZED_REVIEW");
     }
@@ -21,12 +25,12 @@ const giveReview = async (propertyId:string,userId:string,payload:IRview)=>{
         data: {
             rating: Number(rating),
             comment: comment ?? "",
-            tenant: {
-                connect: { id: userId } // ইউজারের মেইন আইডির সাথে সরাসরি কানেক্ট করবে
-            },
-            property: {
-                connect: { id: propertyId } // প্রপার্টির মেইন আইডির সাথে সরাসরি কানেক্ট করবে
-            }
+            tenantId:userId,
+            propertyId
+        },
+        include: {
+            property: { select: { title: true } },
+            tenant: { select: { name: true } }
         }
     });
 
