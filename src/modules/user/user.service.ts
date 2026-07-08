@@ -61,12 +61,11 @@ const getMyProfileFromDB = async (userId: string) => {
     return user
 }
 const updateMyprofileInDB = async (userId: string, payload: IUpdateUser) => {
-    const { name, email, profilePhoto, bio } = payload;
+    const { name,profilePhoto, bio } = payload;
     const updatedUser = await prisma.user.update({
         where: { id: userId },
         data: {
             name,
-            email,
             profilePhoto,
             profile: {
                 update: {
