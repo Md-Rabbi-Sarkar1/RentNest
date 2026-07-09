@@ -125,10 +125,13 @@ const getPaymentHistory=async(tenantId : string)=>{
     })
     return result
 }
-const getPaymentHistoryById=async(paymentId : string)=>{
+const getPaymentHistoryById=async(paymentId : string, tenantId: string)=>{
     const result = await prisma.payment.findUniqueOrThrow({
         where:{
-            id: paymentId
+            id: paymentId,
+            rentalRequest:{
+              tenantId:tenantId
+            }
         }
     })
     return result

@@ -20,7 +20,8 @@ const createPost = catchAsync(async (req: Request, res: Response, next: NextFunc
 
 const getAllPost = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const query = req.query
-    const result = await postService.getAllPost(query as IPQuery);
+    const userId = req.user?.id
+    const result = await postService.getAllPost(query as IPQuery,userId as string);
     sendResponse(res, {
         success: true,
         statusCode: StatusCodes.OK,
@@ -31,10 +32,11 @@ const getAllPost = catchAsync(async (req: Request, res: Response, next: NextFunc
 })
 const getPostById = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const postId = req.params.postId
+    const userId = req.user?.id
     if (!postId) {
         throw new Error("Post id required in params")
     }
-    const result = await postService.getPostById(postId as string)
+    const result = await postService.getPostById(postId as string, userId as string)
     sendResponse(res, {
         success: true,
         statusCode: StatusCodes.OK,

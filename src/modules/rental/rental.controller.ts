@@ -19,8 +19,12 @@ const rentalRequest = catchAsync(async(req: Request, res: Response, next: NextFu
         })
 })
 const getAllRentalReqest = catchAsync(async(req: Request, res: Response, next: NextFunction)=>{
-
-    const result= await rentalService.getAllRentalRequest()
+    const userId= req.user?.id
+    console.log(userId)
+    if(!userId){
+        throw new Error("User id required in params")
+    }
+    const result= await rentalService.getAllRentalRequest(userId as string)
         sendResponse(res,{
             success:true,
             statusCode:StatusCodes.OK,
@@ -31,10 +35,14 @@ const getAllRentalReqest = catchAsync(async(req: Request, res: Response, next: N
 
 const getAllRentalReqestByRentalId = catchAsync(async(req: Request, res: Response, next: NextFunction)=>{
     const id = req.params.id
+    const userId= req.user?.id
+    if(!userId){
+        throw new Error("User id required in params")
+    }
     if (!id) {
         throw new Error( "Target tracking request ID parameter required");
     }
-    const result= await rentalService.getAllRentalRequestRentalId(id as string)
+    const result= await rentalService.getAllRentalRequestRentalId(id as string , userId as string)
         sendResponse(res,{
             success:true,
             statusCode:StatusCodes.OK,

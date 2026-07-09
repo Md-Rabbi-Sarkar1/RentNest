@@ -28,8 +28,11 @@ const rentalRequest = async(propertyId:string,userId:string)=>{
     })
     return result
 }
-const getAllRentalRequest = async()=>{
+const getAllRentalRequest = async(userId : string)=>{
     const result = await prisma.rentalRequest.findMany({
+        where:{
+            tenantId:userId
+        },
         include:{
             payments:true,
             property:{select:{title:true,address:true}},
@@ -40,7 +43,7 @@ const getAllRentalRequest = async()=>{
     })
     return result
 }
-const getAllRentalRequestRentalId = async(id:string)=>{
+const getAllRentalRequestRentalId = async(id:string,userId:string)=>{
 const result = await prisma.rentalRequest.findUniqueOrThrow({
     where:{
         id

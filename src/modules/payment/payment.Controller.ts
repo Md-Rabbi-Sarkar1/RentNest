@@ -58,7 +58,11 @@ const getPaymentHistory =catchAsync(
 const getPaymentHistoryById=catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const paymentId = req.params.id
-    const result = await paymentService.getPaymentHistoryById(paymentId as string )
+    const userId = req.user?.id
+    if (!paymentId) {
+        throw new Error("Validation Error: Payment ID parameter is required");
+    }
+    const result = await paymentService.getPaymentHistoryById(paymentId as string ,userId as string )
     sendResponse(res, {
                 success: true,
                 statusCode: StatusCodes.OK,

@@ -17,7 +17,7 @@ const createPostIntoDB = async (payload: IPost, userId: string) => {
     return result
 }
 
-const getAllPost = async (query: IPQuery) => {
+const getAllPost = async (query: IPQuery ,userId:string) => {
     const limit = query.limit? Number(query.limit):1;
     const page = query.page? Number(query.page):1;
     const skip = (page -1) *limit;
@@ -62,6 +62,7 @@ const post = await prisma.property.findMany({
     })
     const totalPostCount = await prisma.property.count({
         where:{
+            landlordId:userId,
             AND:andCondition
         }
     })
@@ -75,12 +76,13 @@ const post = await prisma.property.findMany({
         }
     }
 }
-const getPostById = async (postId: string) => {
+const getPostById = async (postId: string, userId: string) => {
 
 
         const result = await prisma.property.findUniqueOrThrow({
             where: {
                 id: postId,
+                landlordId:userId
             },
             include: {
                 landlord: {
