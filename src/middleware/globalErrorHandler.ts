@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from "express";
 import httpStatus from "http-status";
 import { Prisma } from "../../generated/prisma/client";
-import { StatusCodes } from "http-status-codes";
+
 
 export const globalErrorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
-    let statusCode=err.statusCode || httpStatus.INTERNAL_SERVER_ERROR;
+    let statusCode = err.statusCode || httpStatus.INTERNAL_SERVER_ERROR;
     let errorMessage = err.message || "Internal Server Error";
     let errorName = err.name || "Internal Server Error"
 
@@ -35,8 +35,8 @@ export const globalErrorHandler = (err: any, req: Request, res: Response, next: 
         errorMessage = "Error occurred during query execution"
     }
     else if (err as any) {
-    
-        statusCode = err.statusCode  || httpStatus.BAD_REQUEST; 
+
+        statusCode = err.statusCode || httpStatus.BAD_REQUEST;
         errorMessage = err.message;
         errorName = "OperationalError";
     }

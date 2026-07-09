@@ -3,7 +3,6 @@ import { catchAsync } from "../../utils/catchAsync"
 import { sendResponse } from "../../utils/sendResponse"
 import { NextFunction, Request, Response } from "express"
 import { adminService } from "./admin.service"
-import { ICategory } from "./interface"
 
 const getAllUser = catchAsync(
     async (req: Request, res: Response, next: NextFunction) => {

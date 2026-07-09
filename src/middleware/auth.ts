@@ -37,7 +37,8 @@ export const auth = (...requiredRoles: Role[]) => {
             throw new Error("forbidden")
         }
         if (requiredRoles.length > 0 && !requiredRoles.includes(role)) {
-      throw new Error("you are not authorized to access this route")}
+            throw new Error("you are not authorized to access this route")
+        }
         const user = await prisma.user.findUnique({
             where: {
                 id,

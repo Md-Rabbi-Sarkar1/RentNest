@@ -43,17 +43,17 @@ const getAllProperties = async () => {
             },
             landlord: { select: { id: true, name: true, email: true } }
         },
-        orderBy:{createdAt:"desc"}
+        orderBy: { createdAt: "desc" }
     })
     return result
 }
 const getAllRentals = async () => {
     const result = await prisma.rentalRequest.findMany({
-        include:{
-            property:{select:{title:true}},
-            tenant:{select:{name:true,email:true}}
+        include: {
+            property: { select: { title: true } },
+            tenant: { select: { name: true, email: true } }
         },
-        orderBy:{createdAt:"desc"}
+        orderBy: { createdAt: "desc" }
     })
     return result
 }
@@ -61,7 +61,7 @@ const postCategory = async (payload: ICategory) => {
     const duplicateCategory = await prisma.category.findUnique({
         where: { name: payload.name }
     });
-        if (duplicateCategory) {
+    if (duplicateCategory) {
         throw new Error("A structural marketplace classification already exists with this exact name");
     }
     const result = await prisma.category.create({
