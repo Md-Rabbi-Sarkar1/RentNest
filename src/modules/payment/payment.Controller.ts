@@ -25,7 +25,7 @@ const result = await paymentService.createPayment( rentalRequestId as string,use
             })
     })
 
-const verifyPayment = catchAsync(async (req, res) => {
+const verifyPayment = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
   const { orderId, tranId, status } = req.query;
     const user = req.user
   const payload = req.body;

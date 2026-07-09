@@ -6,7 +6,7 @@ import { postService } from "./post.service"
 import { IPQuery } from "./interface"
 import { prisma } from "../../lib/prisma"
 
-const createPost = catchAsync(async (req, res) => {
+const createPost = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const id = req.user?.id
     const payload = req.body
     const result = await postService.createPostIntoDB(payload, id as string)
@@ -18,7 +18,7 @@ const createPost = catchAsync(async (req, res) => {
     })
 })
 
-const getAllPost = catchAsync(async (req, res) => {
+const getAllPost = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const query = req.query
     const result = await postService.getAllPost(query as IPQuery);
     sendResponse(res, {
@@ -29,7 +29,7 @@ const getAllPost = catchAsync(async (req, res) => {
         meta: result.meta
     })
 })
-const getPostById = catchAsync(async (req, res) => {
+const getPostById = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const postId = req.params.postId
     if (!postId) {
         throw new Error("Post id required in params")
@@ -42,7 +42,7 @@ const getPostById = catchAsync(async (req, res) => {
         data: result
     })
 })
-const updatePost = catchAsync(async (req, res) => {
+const updatePost = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const authorId = req.user?.id
   
     const postId = req.params.postId
@@ -58,7 +58,7 @@ const updatePost = catchAsync(async (req, res) => {
         data: result
     })
 })
-const deletePost = catchAsync(async (req, res) => {
+const deletePost = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const authorId = req.user?.id
     const isAdmin = req.user?.role === "ADMIN"
     const postId = req.params.postId
@@ -86,8 +86,7 @@ const getRentalRequestMyPost = catchAsync(async (req:Request, res:Response,next:
     })
 })
 
-const changeRequestState = catchAsync(async (req,
-    res) => {
+const changeRequestState = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const requsestId = req.params.id
     const userId= req.user?.id
     const status=req.body.status
