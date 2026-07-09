@@ -14,7 +14,5 @@ async function main() {
       role: 'ADMIN',
     },
   });
-
-  console.log('Seed success: Admin account created!', admin);
 }
 main()
