@@ -29,7 +29,7 @@ const getAllRentalReqest = catchAsync(async(req: Request, res: Response, next: N
         })
 })
 
-const getAllRentalReqestByRentalId = catchAsync(async(req,res)=>{
+const getAllRentalReqestByRentalId = catchAsync(async(req: Request, res: Response, next: NextFunction)=>{
     const id = req.params.id
     if (!id) {
         throw new Error( "Target tracking request ID parameter required");
